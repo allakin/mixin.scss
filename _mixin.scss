@@ -1,0 +1,342 @@
+//
+//  В этом файле находятся миксины для создания стилей на ретина экранах
+//  и создания стиля при наведении.
+//
+
+//
+// обьявляем переменные
+//
+
+$path : "../img/";
+$type : "png";
+$pixel : px;
+$zero : 0;
+
+//
+// добавляем миксин - для ретина экранов с указанием ширины и длинны,
+// добавлено условие для отображения ширины и высоты
+// добавлена переменная count, она нужна для расчета ширины блока при наведении
+//
+
+@mixin retina($file, $width : 0, $height : 0, $count : 1) {
+  background-image : url($path + $file + '.' + $type);
+
+  @if $width == 0 {
+  } @else {
+    width : $width + $pixel;
+  }
+
+  @if $height == 0 {
+  } @else {
+    height : $height + $pixel;
+  }
+
+  @media only screen and (-webkit-min-device-pixel-ratio : 2),
+  only screen and (-moz-min-device-pixel-ratio           : 2),
+  only screen and (-o-min-device-pixel-ratio             : 2/1),
+  only screen and (min-device-pixel-ratio                : 2),
+  only screen and (min-resolution                        : 192dpi),
+  only screen and (min-resolution                        : 2dppx) {
+    & {
+      background-image : url($path + $file + '@2x.' + $type);
+      @if $count == 1 {
+        -webkit-background-size : $width * 1 + $pixel $height + $pixel;
+        -moz-background-size    : $width * 1 + $pixel $height + $pixel;
+        -o-background-size      : $width * 1 + $pixel $height + $pixel;
+        background-size         : $width * 1 + $pixel $height + $pixel;
+      } @else {
+        -webkit-background-size : $width * 2 + $pixel $height + $pixel;
+        -moz-background-size    : $width * 2 + $pixel $height + $pixel;
+        -o-background-size      : $width * 2 + $pixel $height + $pixel;
+        background-size         : $width * 2 + $pixel $height + $pixel;
+      }
+    }
+  }
+}
+
+//
+// миксин для центрирования блоков
+//
+
+@mixin center() {
+  margin-right : auto;
+  margin-left  : auto;
+}
+
+//
+// миксин для центирирования блоков без указания ширины
+//
+
+@mixin table-center() {
+  display      : table;
+  margin-right : auto;
+  margin-left  : auto;
+}
+
+//
+// миксин для центирирования блоков без указания ширины
+//
+
+@mixin block-center($width : 0) {
+  @if $width == 0 {
+  } @else {
+    width: $width + $pixel;
+  }
+
+  display      : block;
+  margin-right : auto;
+  margin-left  : auto;
+}
+
+//
+// миксин нужен для изменения "background-position" у спрайта
+// при наведении
+//
+
+@mixin after-hover($width) {
+  &:after {
+    content  : "";
+    position : absolute;
+    top      : $zero + $pixel;
+    left     : $zero + $pixel;
+  }
+  &:hover {
+    cursor : pointer;
+    &:after {
+      background-position : -$width + $pixel $zero;
+    }
+  }
+}
+
+//
+// миксин для центирования спрайта внутри блока
+//
+
+@mixin after-hover-center($width, $height) {
+  &:after {
+    content     : "";
+    position    : absolute;
+    top         : 50%;
+    left        : 50%;
+    margin-left : -$width / 2 + $pixel;
+    margin-top  : -$height/ 2 + $pixel;
+  }
+  &:hover {
+    cursor : pointer;
+    &:after {
+      background-position : -$width + $pixel $zero;
+    }
+  }
+}
+
+//
+// простой миксин для указания ширины и высоты
+//
+
+@mixin width-height($width, $height) {
+  width  : $width + $pixel;
+  height : $height + $pixel;
+}
+
+//
+// простой миксин для добавления кросбраузерного
+// border-radius
+//
+
+@mixin border-radius($border-radius...) {
+  border-radius         : ($border-radius);
+  -moz-border-radius    : ($border-radius);
+  -webkit-border-radius : ($border-radius);
+}
+
+//
+// миксин для обрезки текста,
+// не обязательный параметр $width
+//
+
+@mixin ellipsis($width : 0) {
+
+  @if $width == 0 {
+  } @else {
+    width : $width + $pixel;
+  }
+
+  overflow         : hidden;
+  white-space      : nowrap;
+  text-overflow    : ellipsis;
+  -o-text-overflow : ellipsis;
+  display          : block;
+}
+
+//
+// миксин для обнуления float (clearfix)
+//
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content : " "; // 1
+    display : table; // 2
+  }
+  &:after {
+    clear : both;
+  }
+}
+
+//
+// запрет выделения текста
+//
+
+@mixin user-select() {
+  -webkit-user-select : none;
+  -moz-user-select    : none;
+  -ms-user-select     : none;
+  -o-user-select      : none;
+  user-select         : none;
+}
+
+//
+// добавляет box-sizing ко всем элементам
+//
+
+@mixin box-sizing() {
+  html {
+    box-sizing : border-box;
+  }
+  *, *:before, *:after {
+    box-sizing : inherit;
+  }
+}
+
+//
+// миксин для кроссбраузерного transition
+//
+
+@mixin transition($transition-property...) {
+  -webkit-transition : $transition-property;
+  -moz-transition    : $transition-property;
+  -ms-transition     : $transition-property;
+  -o-transition      : $transition-property;
+  transition         : $transition-property;
+}
+
+//
+// миксин для кроссбраузерного transform
+//
+
+@mixin transform($transform-property...) {
+  -moz-transform    : $transform-property;
+  -ms-transform     : $transform-property;
+  -webkit-transform : $transform-property;
+  -o-transform      : $transform-property;
+  transform         : $transform-property;
+}
+
+//
+// миксин для выделения ошибок на странице
+//
+
+@mixin errorCSS() {
+  // пустые элементы заливает желтым цветом
+  div:empty, span:empty, li:empty, p:empty, td:empty, th:empty {
+    padding    : 0.5em ! important;
+    background : yellow ! important;
+  }
+
+  // все картинки и ссылки оборачиваем рамкой в 5 пикселей
+  // если есть атрибут style
+  // если есть атрибут href у тега a
+  *[style], img, a[href], font, center {
+    outline : 5px solid #c087ff ! important;
+  }
+
+  // все кнопки оборачиваем рамкой в 3 пикселей
+  button {
+    outline : 3px solid #c48416 ! important;
+  }
+
+  // все таблицы оборачиваем рамкой в 5 пикселей
+  table, th {
+    border : 5px solid red ! important;
+  }
+
+  //если есть заполненые атрибуты alt и title не выделяем
+  img[alt][title] {
+    outline-width : 0 ! important;
+  }
+
+  //если есть атрибут alt у картинки
+  img[alt] {
+    outline-color : fuchsia ! important;
+  }
+
+  //если есть атрибуты alt и title у картинки
+  img[alt], img[title] {
+    outline-style : double ! important;
+  }
+
+  //если один из атрибутов alt или title пустой, а другой заполненый
+  img[alt=""][title], img[alt][title=""] {
+    outline-width : 3px ! important;
+  }
+
+  //если один атрибуты alt и title пустые
+  img[alt=""][title=""] {
+    outline-style : dotted ! important;
+  }
+
+  table[summary], th[scope="col"], th[scope="row"] {
+    border : 1px solid #aaa ! important;
+  }
+
+  //если есть заполненый атрибут title не выделяем
+  a [ title ] {
+    outline-width : 0 ! important;
+  }
+
+  //если есть пустой атрибут title
+  a [ title = "" ] {
+    outline-width : 3 ! important;
+  }
+
+  //если есть пустой атрибут href равен #
+  a [ href = "#" ] {
+    background : lime ! important;
+  }
+
+  //если есть пустой атрибут href
+  a [ href = "" ] {
+    background : fuchsia ! important;
+  }
+}
+
+//
+//миксин для указания позиции блоков
+//синтаксис @include position (0,0,0,0);
+//
+
+@mixin position($top : null, $right : null, $bottom : null, $left : null) {
+  @if $top == null {
+
+  } @else {
+    top : $top + $pixel;
+  }
+
+  @if $right == null {
+
+  } @else {
+    right : $right + $pixel;
+  }
+
+  @if $bottom == null {
+
+  } @else {
+    bottom : $bottom + $pixel;
+  }
+
+  @if $left == null {
+
+  } @else {
+    left : $left + $pixel;
+  }
+}
