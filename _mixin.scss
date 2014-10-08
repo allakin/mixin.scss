@@ -1,4 +1,4 @@
-//
+ //
 //  В этом файле находятся миксины для создания стилей на ретина экранах
 //  и создания стиля при наведении.
 //
@@ -89,64 +89,12 @@ $zero : 0;
 }
 
 //
-// миксин нужен для изменения "background-position" у спрайта
-// при наведении
-//
-
-@mixin after-hover($width) {
-  &:after {
-    content  : "";
-    position : absolute;
-    top      : $zero + $pixel;
-    left     : $zero + $pixel;
-  }
-  &:hover {
-    cursor : pointer;
-    &:after {
-      background-position : -$width + $pixel $zero;
-    }
-  }
-}
-
-//
-// миксин для центирования спрайта внутри блока
-//
-
-@mixin after-hover-center($width, $height) {
-  &:after {
-    content     : "";
-    position    : absolute;
-    top         : 50%;
-    left        : 50%;
-    margin-left : -$width / 2 + $pixel;
-    margin-top  : -$height/ 2 + $pixel;
-  }
-  &:hover {
-    cursor : pointer;
-    &:after {
-      background-position : -$width + $pixel $zero;
-    }
-  }
-}
-
-//
 // простой миксин для указания ширины и высоты
 //
 
 @mixin width-height($width, $height) {
   width  : $width + $pixel;
   height : $height + $pixel;
-}
-
-//
-// простой миксин для добавления кросбраузерного
-// border-radius
-//
-
-@mixin border-radius($border-radius...) {
-  border-radius         : ($border-radius);
-  -moz-border-radius    : ($border-radius);
-  -webkit-border-radius : ($border-radius);
 }
 
 //
@@ -175,24 +123,12 @@ $zero : 0;
 @mixin clearfix() {
   &:before,
   &:after {
-    content : " "; // 1
-    display : table; // 2
+    content : " ";
+    display : table;
   }
   &:after {
     clear : both;
   }
-}
-
-//
-// запрет выделения текста
-//
-
-@mixin user-select() {
-  -webkit-user-select : none;
-  -moz-user-select    : none;
-  -ms-user-select     : none;
-  -o-user-select      : none;
-  user-select         : none;
 }
 
 //
@@ -206,30 +142,6 @@ $zero : 0;
   *, *:before, *:after {
     box-sizing : inherit;
   }
-}
-
-//
-// миксин для кроссбраузерного transition
-//
-
-@mixin transition($transition-property...) {
-  -webkit-transition : $transition-property;
-  -moz-transition    : $transition-property;
-  -ms-transition     : $transition-property;
-  -o-transition      : $transition-property;
-  transition         : $transition-property;
-}
-
-//
-// миксин для кроссбраузерного transform
-//
-
-@mixin transform($transform-property...) {
-  -moz-transform    : $transform-property;
-  -ms-transform     : $transform-property;
-  -webkit-transform : $transform-property;
-  -o-transform      : $transform-property;
-  transform         : $transform-property;
 }
 
 //
